@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Domain Intel",
+    "description": "Domain Intel provides complete domain reconnaissance: A/AAAA/MX/NS/TXT/CNAME/SOA DNS lookups, RDAP-based whois (registrar, status, events, nameservers) with redirect handling and strict timeouts, and availability inference. Zero third-party dependencies. Ideal for security tools, registrars and monitoring.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/domain-intel/v1"
+    }
+  ],
+  "paths": {
+    "/dns": {
+      "get": {
+        "summary": "Look up all DNS records",
+        "description": "Look up all DNS records",
+        "operationId": "dnsLookup",
+        "tags": [
+          "Domain Intel"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain to query",
+            "schema": {
+              "type": "string",
+              "example": "example.com"
+            }
+          }
+        ]
+      }
+    },
+    "/whois": {
+      "get": {
+        "summary": "RDAP whois lookup",
+        "description": "RDAP whois lookup",
+        "operationId": "rdapWhois",
+        "tags": [
+          "Domain Intel"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain to query",
+            "schema": {
+              "type": "string",
+              "example": "example.com"
+            }
+          }
+        ]
+      }
+    },
+    "/availability": {
+      "get": {
+        "summary": "Check domain availability",
+        "description": "Check domain availability",
+        "operationId": "domainAvailability",
+        "tags": [
+          "Domain Intel"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain to check",
+            "schema": {
+              "type": "string",
+              "example": "example.com"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

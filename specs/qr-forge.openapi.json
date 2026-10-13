@@ -1,0 +1,155 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "QR Forge",
+    "description": "QR Forge is a from-scratch ISO/IEC 18004 QR encoder: byte mode, versions 1-10, all four ECC levels, Reed-Solomon error correction over GF(256), automatic mask optimization with full penalty scoring. Outputs crisp PNG (any scale/colors) or SVG. No third-party libraries — ideal for receipts, tickets, marketing, and logistics.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/qr/v1"
+    }
+  ],
+  "paths": {
+    "/generate": {
+      "get": {
+        "summary": "Generate a QR code (PNG or SVG)",
+        "description": "Generate a QR code (PNG or SVG)",
+        "operationId": "generateQr",
+        "tags": [
+          "QR Forge"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "description": "Content to encode (up to 271 bytes)",
+            "schema": {
+              "type": "string",
+              "example": "https://example.com"
+            }
+          },
+          {
+            "name": "ecc",
+            "in": "query",
+            "required": false,
+            "description": "Error correction: L|M|Q|H",
+            "schema": {
+              "type": "string",
+              "example": "M"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "png | svg",
+            "schema": {
+              "type": "string",
+              "example": "png"
+            }
+          },
+          {
+            "name": "scale",
+            "in": "query",
+            "required": false,
+            "description": "Pixels per module (1-64)",
+            "schema": {
+              "type": "integer",
+              "example": 8
+            }
+          },
+          {
+            "name": "border",
+            "in": "query",
+            "required": false,
+            "description": "Quiet zone modules (0-32)",
+            "schema": {
+              "type": "integer",
+              "example": 4
+            }
+          },
+          {
+            "name": "dark",
+            "in": "query",
+            "required": false,
+            "description": "Dark color hex",
+            "schema": {
+              "type": "string",
+              "example": "#000000"
+            }
+          },
+          {
+            "name": "light",
+            "in": "query",
+            "required": false,
+            "description": "Light color hex",
+            "schema": {
+              "type": "string",
+              "example": "#ffffff"
+            }
+          }
+        ]
+      }
+    },
+    "/capacity": {
+      "get": {
+        "summary": "Byte-mode capacity table",
+        "description": "Byte-mode capacity table",
+        "operationId": "qrCapacity",
+        "tags": [
+          "QR Forge"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ecc",
+            "in": "query",
+            "required": false,
+            "description": "ECC level L|M|Q|H",
+            "schema": {
+              "type": "string",
+              "example": "M"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "IBAN Suite",
+    "description": "IBAN Suite validates International Bank Account Numbers using the ISO 13616 mod-97 algorithm (BigInt precision), checks country-specific lengths for 60+ countries, extracts bank codes, formats IBANs into 4-character blocks, and generates valid IBANs from a BBAN by computing correct check digits. Built for payments, invoicing and fintech integrations.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/iban/v1"
+    }
+  ],
+  "paths": {
+    "/validate": {
+      "get": {
+        "summary": "Validate an IBAN",
+        "description": "Validate an IBAN",
+        "operationId": "validateIban",
+        "tags": [
+          "IBAN Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "iban",
+            "in": "query",
+            "required": true,
+            "description": "IBAN to validate",
+            "schema": {
+              "type": "string",
+              "example": "DE89370400440532013000"
+            }
+          }
+        ]
+      }
+    },
+    "/format": {
+      "get": {
+        "summary": "Format an IBAN in 4-character blocks",
+        "description": "Format an IBAN in 4-character blocks",
+        "operationId": "formatIban",
+        "tags": [
+          "IBAN Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "iban",
+            "in": "query",
+            "required": true,
+            "description": "IBAN to format",
+            "schema": {
+              "type": "string",
+              "example": "DE89370400440532013000"
+            }
+          }
+        ]
+      }
+    },
+    "/generate": {
+      "get": {
+        "summary": "Generate an IBAN from country + BBAN",
+        "description": "Generate an IBAN from country + BBAN",
+        "operationId": "generateIban",
+        "tags": [
+          "IBAN Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "2-letter ISO country code",
+            "schema": {
+              "type": "string",
+              "example": "DE"
+            }
+          },
+          {
+            "name": "bban",
+            "in": "query",
+            "required": true,
+            "description": "Basic Bank Account Number (without country/check digits)",
+            "schema": {
+              "type": "string",
+              "example": "370400440532013000"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

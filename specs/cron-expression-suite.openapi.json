@@ -1,0 +1,171 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Cron Expression Suite",
+    "description": "Cron Expression Suite parses, validates and explains cron schedules and computes their next run times in UTC. It handles both classic 5-field and 6-field (seconds) syntax, lists, ranges and steps, month/weekday names, \"?\" wildcards, and the common @macros (@yearly, @monthly, @weekly, @daily, @hourly, @reboot). Each field is parsed into an allowed-value set so the next-run engine advances a UTC instant and reports every upcoming occurrence — with a bounded search that reports exhaustion instead of looping on impossible dates. Built for DevOps and monitoring tools, schedulers, workflow builders and no-code automation platforms that need reliable cron semantics without pulling in a dependency.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/cron/v1"
+    }
+  ],
+  "paths": {
+    "/parse": {
+      "post": {
+        "summary": "Parse and describe a cron expression with next run times",
+        "description": "Parses a 5- or 6-field cron expression (or @macro), returns the parsed fields, a human-readable English description, whether a seconds field is present, and the next run times as ISO strings.",
+        "operationId": "parseCron",
+        "tags": [
+          "Cron Expression Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string",
+                    "description": "Cron expression (5/6 fields or @macro)",
+                    "example": "*/15 * * * *"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "description": "Number of next run times to return (default 5, max 100)",
+                    "example": 5
+                  },
+                  "from": {
+                    "type": "string",
+                    "description": "ISO-8601 start instant (default: now)",
+                    "example": "2024-01-01T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "expression"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/next": {
+      "post": {
+        "summary": "Compute the next run times of a cron expression",
+        "description": "Returns the upcoming run times (ISO strings) of a cron expression starting from an optional instant.",
+        "operationId": "nextCronRuns",
+        "tags": [
+          "Cron Expression Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string",
+                    "description": "Cron expression (5/6 fields or @macro)",
+                    "example": "0 9 * * 1-5"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "description": "Number of next run times to return (default 5, max 100)",
+                    "example": 5
+                  },
+                  "from": {
+                    "type": "string",
+                    "description": "ISO-8601 start instant (default: now)",
+                    "example": "2024-01-01T00:00:00Z"
+                  }
+                },
+                "required": [
+                  "expression"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/validate": {
+      "get": {
+        "summary": "Validate a cron expression",
+        "description": "Checks whether a cron expression (or @macro) is well-formed and returns any errors plus the parsed fields.",
+        "operationId": "validateCron",
+        "tags": [
+          "Cron Expression Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "expression",
+            "in": "query",
+            "required": true,
+            "description": "Cron expression to validate",
+            "schema": {
+              "type": "string",
+              "example": "0 0 1 * *"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Semantic Version Suite",
+    "description": "Semantic Version Suite implements the complete SemVer 2.0.0 precedence rules — numeric core comparison, prerelease ordering (numeric vs alphanumeric, left-to-right, longer-list-wins) and build-metadata handling — plus npm-style range syntax: caret (^), tilde (~), x-ranges (1.2.x, *, empty), hyphen ranges (1.2.3 - 2.3.4), OR (||) and AND (space-separated), including the correct prerelease-satisfaction rule. Use it from dependency-update bots, CI/CD pipelines, release tooling and no-code platforms that need to reason about versions without pulling in a package.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/semver/v1"
+    }
+  ],
+  "paths": {
+    "/parse": {
+      "get": {
+        "summary": "Parse a SemVer version",
+        "description": "Parse a SemVer 2.0.0 string into its components, returning validity and a normalized form.",
+        "operationId": "parseSemver",
+        "tags": [
+          "Semantic Version Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "description": "SemVer 2.0.0 version string",
+            "schema": {
+              "type": "string",
+              "example": "1.2.3-alpha.1+build.5"
+            }
+          }
+        ]
+      }
+    },
+    "/compare": {
+      "get": {
+        "summary": "Compare two SemVer versions",
+        "description": "Compare two SemVer 2.0.0 versions using full precedence rules; build metadata is ignored.",
+        "operationId": "compareSemver",
+        "tags": [
+          "Semantic Version Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "description": "First version",
+            "schema": {
+              "type": "string",
+              "example": "1.0.0-alpha"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "description": "Second version",
+            "schema": {
+              "type": "string",
+              "example": "1.0.0"
+            }
+          }
+        ]
+      }
+    },
+    "/satisfies": {
+      "get": {
+        "summary": "Test a version against a range",
+        "description": "Test whether a version satisfies an npm-style range (^, ~, x-ranges, hyphen, || and AND comparators).",
+        "operationId": "satisfiesSemver",
+        "tags": [
+          "Semantic Version Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "description": "Version to test",
+            "schema": {
+              "type": "string",
+              "example": "1.2.3"
+            }
+          },
+          {
+            "name": "range",
+            "in": "query",
+            "required": true,
+            "description": "Range expression",
+            "schema": {
+              "type": "string",
+              "example": "^1.2.0"
+            }
+          }
+        ]
+      }
+    },
+    "/bump": {
+      "get": {
+        "summary": "Bump a version",
+        "description": "Increment a version by release type (major, minor, patch, premajor, preminor, prepatch, prerelease), optionally with a prerelease identifier.",
+        "operationId": "bumpSemver",
+        "tags": [
+          "Semantic Version Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "description": "Version to bump",
+            "schema": {
+              "type": "string",
+              "example": "1.2.3"
+            }
+          },
+          {
+            "name": "release",
+            "in": "query",
+            "required": true,
+            "description": "Release type",
+            "schema": {
+              "type": "string",
+              "example": "patch"
+            }
+          },
+          {
+            "name": "prerelease_id",
+            "in": "query",
+            "required": false,
+            "description": "Prerelease identifier (e.g. \"beta\")",
+            "schema": {
+              "type": "string",
+              "example": "beta"
+            }
+          }
+        ]
+      }
+    },
+    "/sort": {
+      "post": {
+        "summary": "Sort a list of versions",
+        "description": "Sort versions ascending (or descending) using SemVer precedence; invalid entries are reported separately.",
+        "operationId": "sortSemver",
+        "tags": [
+          "Semantic Version Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "versions": {
+                    "type": "string",
+                    "description": "Comma-separated versions or a JSON array string",
+                    "example": "1.2.3,1.0.0,1.10.0,1.2.3-alpha"
+                  },
+                  "desc": {
+                    "type": "boolean",
+                    "description": "Sort descending (default false)",
+                    "example": false
+                  }
+                },
+                "required": [
+                  "versions"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

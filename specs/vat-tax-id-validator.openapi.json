@@ -1,0 +1,143 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "VAT & Tax ID Validator",
+    "description": "VAT & Tax ID Validator validates European VAT identification numbers against the real, published per-country rules: ISO 7064 MOD 11,10 product checks, Luhn, MOD 97 / 89 / 23 / 37, weighted mod-11 tests and letter check-digit tables. The hard part — and our moat — is the catalogue of 30 country-specific checksum algorithms, which most simple validators skip in favour of a plain regex. It returns the normalized number together with separate format and checksum verdicts, and can even generate the correct check digits from a partial number. Built for e-commerce tax engines, ERP/accounting integrations and fintech KYC/onboarding flows.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/vat/v1"
+    }
+  ],
+  "paths": {
+    "/validate": {
+      "get": {
+        "summary": "Validate a VAT / Tax ID number",
+        "description": "Validate a VAT number for a supported country. Returns the normalized number, a format verdict and — where a public algorithm exists — a checksum verdict.",
+        "operationId": "validateVat",
+        "tags": [
+          "VAT & Tax ID Validator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 country code, e.g. DE, FR, GB",
+            "schema": {
+              "type": "string",
+              "example": "DE"
+            }
+          },
+          {
+            "name": "vat",
+            "in": "query",
+            "required": true,
+            "description": "VAT number, with or without country prefix and separators",
+            "schema": {
+              "type": "string",
+              "example": "DE 123 456 788"
+            }
+          }
+        ]
+      }
+    },
+    "/countries": {
+      "get": {
+        "summary": "List supported countries",
+        "description": "Returns the supported country codes, their canonical format pattern and whether a real checksum algorithm is applied.",
+        "operationId": "listVatCountries",
+        "tags": [
+          "VAT & Tax ID Validator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    },
+    "/check-digits": {
+      "get": {
+        "summary": "Generate check digits",
+        "description": "Given a partial number (the digits before the check portion) generate the correct check digit(s) and return the completed VAT number.",
+        "operationId": "vatCheckDigits",
+        "tags": [
+          "VAT & Tax ID Validator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 country code",
+            "schema": {
+              "type": "string",
+              "example": "IT"
+            }
+          },
+          {
+            "name": "body",
+            "in": "query",
+            "required": true,
+            "description": "The digits preceding the check portion",
+            "schema": {
+              "type": "string",
+              "example": "1234567890"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

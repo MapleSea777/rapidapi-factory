@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Email Verifier Pro",
+    "description": "Email Verifier Pro validates email addresses end to end: RFC-pragmatic syntax checks, 40+ disposable-domain detections, role-address flagging, typo correction for popular providers (gmial.com → gmail.com), and live DNS MX lookups with a strict timeout. Returns a deliverability verdict and 0-100 quality score. Perfect for signup forms and list hygiene.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/email-verify/v1"
+    }
+  ],
+  "paths": {
+    "/verify": {
+      "get": {
+        "summary": "Verify an email address",
+        "description": "Verify an email address",
+        "operationId": "verifyEmail",
+        "tags": [
+          "Email Verifier Pro"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "description": "Email address to verify",
+            "schema": {
+              "type": "string",
+              "example": "user@example.com"
+            }
+          }
+        ]
+      }
+    },
+    "/mx": {
+      "get": {
+        "summary": "Look up MX records for a domain",
+        "description": "Look up MX records for a domain",
+        "operationId": "mxLookup",
+        "tags": [
+          "Email Verifier Pro"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain to query",
+            "schema": {
+              "type": "string",
+              "example": "example.com"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

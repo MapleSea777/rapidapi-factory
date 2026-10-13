@@ -1,0 +1,103 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Mock Data Factory",
+    "description": "Mock Data Factory generates realistic test data with a seeded mulberry32 PRNG for reproducibility: people, emails, addresses, phone numbers, Luhn-valid credit cards (Visa/Mastercard/Amex prefixes), UUIDv4, dates, companies, colors and usernames. Batch up to 100 records per call. Perfect for development, demos and load testing.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/mock-data/v1"
+    }
+  ],
+  "paths": {
+    "/generate": {
+      "get": {
+        "summary": "Generate mock data",
+        "description": "Generate mock data",
+        "operationId": "generateMockData",
+        "tags": [
+          "Mock Data Factory"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "person|email|address|phone|credit_card|uuid|date|company|color|username",
+            "schema": {
+              "type": "string",
+              "example": "person"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "How many records (1-100)",
+            "schema": {
+              "type": "integer",
+              "example": 5
+            }
+          },
+          {
+            "name": "seed",
+            "in": "query",
+            "required": false,
+            "description": "PRNG seed for reproducible output",
+            "schema": {
+              "type": "integer",
+              "example": 42
+            }
+          }
+        ]
+      }
+    },
+    "/types": {
+      "get": {
+        "summary": "List available data types",
+        "description": "List available data types",
+        "operationId": "listMockTypes",
+        "tags": [
+          "Mock Data Factory"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    }
+  }
+}

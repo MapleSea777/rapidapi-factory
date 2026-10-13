@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Product Identifier Suite",
+    "description": "Product Identifier Suite validates and converts the whole retail and publishing identifier family — GTIN-8/12/13/14, UPC-E, ISBN-10/13, ISSN, ISMN and ISRC — using each standard's published check-digit algorithm (GS1 mod-10, ISBN/ISSN mod-11) instead of one naive formula. It also implements the official UPC-E to UPC-A expansion table, zero-suppression compression, and GTIN-14 left-pad normalization so records from different systems line up. Built for retail and e-commerce catalog operations, PIM and ERP integrations, publishing and rights teams, and data-cleansing pipelines that must detect bad codes before they break a feed.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/product-code/v1"
+    }
+  ],
+  "paths": {
+    "/validate": {
+      "get": {
+        "summary": "Validate any product identifier and verify its check digit",
+        "description": "Validate any product identifier and verify its check digit",
+        "operationId": "validateProductCode",
+        "tags": [
+          "Product Identifier Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "description": "Identifier to validate (GTIN-8/12/13/14, UPC-E, ISBN-10/13, ISSN, ISMN or ISRC)",
+            "schema": {
+              "type": "string",
+              "example": "4006381333931"
+            }
+          }
+        ]
+      }
+    },
+    "/convert": {
+      "get": {
+        "summary": "Convert between compatible identifier forms",
+        "description": "Convert between compatible identifier forms",
+        "operationId": "convertProductCode",
+        "tags": [
+          "Product Identifier Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "description": "Source identifier",
+            "schema": {
+              "type": "string",
+              "example": "01234565"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "Target form: gtin13, gtin14, upca, upce or isbn13",
+            "schema": {
+              "type": "string",
+              "example": "upca"
+            }
+          }
+        ]
+      }
+    },
+    "/generate": {
+      "get": {
+        "summary": "Generate a valid identifier from a payload by computing its check digit",
+        "description": "Generate a valid identifier from a payload by computing its check digit",
+        "operationId": "generateProductCode",
+        "tags": [
+          "Product Identifier Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "description": "Identifier type: ean13, upca, isbn13, issn, ean8, gtin14, ismn or isbn10",
+            "schema": {
+              "type": "string",
+              "example": "ean13"
+            }
+          },
+          {
+            "name": "body",
+            "in": "query",
+            "required": true,
+            "description": "Payload digits WITHOUT the check digit",
+            "schema": {
+              "type": "string",
+              "example": "400638133393"
+            }
+          }
+        ]
+      }
+    },
+    "/types": {
+      "get": {
+        "summary": "List supported identifier types with length and algorithm",
+        "description": "List supported identifier types with length and algorithm",
+        "operationId": "listProductCodeTypes",
+        "tags": [
+          "Product Identifier Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    }
+  }
+}

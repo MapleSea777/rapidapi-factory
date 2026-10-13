@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Readability Lab",
+    "description": "Readability Lab scores any text with six classic formulas — Flesch Reading Ease, Flesch-Kincaid Grade, Gunning Fog, SMOG, Coleman-Liau and the Automated Readability Index — plus a consensus grade level and a plain-language difficulty band. Built on a syllable heuristic with silent-e handling. Great for content teams, education and compliance writing.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/readability/v1"
+    }
+  ],
+  "paths": {
+    "/analyze": {
+      "post": {
+        "summary": "Analyze text readability",
+        "description": "Analyze text readability",
+        "operationId": "analyzeReadability",
+        "tags": [
+          "Readability Lab"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Text to analyze",
+                    "example": "The cat sat on the mat. It was a sunny day."
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

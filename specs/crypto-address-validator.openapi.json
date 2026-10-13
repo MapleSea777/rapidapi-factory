@@ -1,0 +1,133 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Crypto Address Validator",
+    "description": "Crypto Address Validator checks and classifies crypto wallet addresses across ten chains with zero dependencies: from-scratch Base58Check (double-SHA256), full Bech32/Bech32m segwit decoding (BIP-173 / BIP-350, P2WPKH / P2WSH / P2TR), Ethereum EIP-55 Keccak-256 checksums, Ripple-alphabet XRP addresses, Cardano Bech32, Solana base58, and Polkadot SS58 (blake2b-512). It reports the detected chain, address type, network and whether the embedded checksum is valid, and can auto-detect the chain from a raw address. Built for crypto exchanges, wallets, fintech KYC/withdrawal screens and payment gateways that must screen user-entered addresses before funds move.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/crypto-addr/v1"
+    }
+  ],
+  "paths": {
+    "/validate": {
+      "get": {
+        "summary": "Validate an address (optionally for a specific chain)",
+        "description": "Validate a crypto address. If \"chain\" is provided it is validated strictly against that chain; otherwise the address is matched against every supported chain and the first match is reported.",
+        "operationId": "validateCryptoAddress",
+        "tags": [
+          "Crypto Address Validator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "description": "Crypto wallet address to validate",
+            "schema": {
+              "type": "string",
+              "example": "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2"
+            }
+          },
+          {
+            "name": "chain",
+            "in": "query",
+            "required": false,
+            "description": "Restrict validation to one chain (BTC, LTC, DOGE, DASH, ETH, TRON, XRP, ADA, SOL, DOT)",
+            "schema": {
+              "type": "string",
+              "example": "BTC"
+            }
+          }
+        ]
+      }
+    },
+    "/detect": {
+      "get": {
+        "summary": "Detect the chain(s) an address belongs to",
+        "description": "Auto-detect which supported chain(s) and address types an address matches, and whether the result is ambiguous.",
+        "operationId": "detectCryptoAddress",
+        "tags": [
+          "Crypto Address Validator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "description": "Crypto wallet address to classify",
+            "schema": {
+              "type": "string",
+              "example": "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed"
+            }
+          }
+        ]
+      }
+    },
+    "/chains": {
+      "get": {
+        "summary": "List supported chains, address types and algorithms",
+        "description": "Return the list of supported chains with their address types and the validation algorithm used for each.",
+        "operationId": "listCryptoChains",
+        "tags": [
+          "Crypto Address Validator"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    }
+  }
+}

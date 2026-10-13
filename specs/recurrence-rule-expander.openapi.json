@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Recurrence Rule Expander",
+    "description": "Recurrence Rule Expander implements the full RFC 5545 RRULE semantics in UTC: FREQ/INTERVAL/COUNT/UNTIL, ordinal BYDAY (e.g. 2MO, -1FR), BYSETPOS, negative BYMONTHDAY (-1 = last day), BYMONTH/BYYEARDAY/BYWEEKNO/BYHOUR/BYMINUTE/BYSECOND, WKST-aware weeks, correct month-length overflow and EXDATE exclusion. It returns concrete occurrence instants or a plain-English description. Built for calendar/scheduling SaaS, HR payroll cycles, maintenance planning and booking systems.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/rrule/v1"
+    }
+  ],
+  "paths": {
+    "/expand": {
+      "post": {
+        "summary": "Expand an RRULE into concrete occurrence date-times",
+        "description": "Expand an RRULE into concrete occurrence date-times",
+        "operationId": "expandRRule",
+        "tags": [
+          "Recurrence Rule Expander"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rrule": {
+                    "type": "string",
+                    "description": "RRULE string, e.g. \"FREQ=WEEKLY;COUNT=10\"; may be wrapped as \"DTSTART:19970902T090000Z;RRULE:FREQ=WEEKLY;COUNT=10\"",
+                    "example": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,WE;COUNT=4"
+                  },
+                  "dtstart": {
+                    "type": "string",
+                    "description": "Start date-time (ISO 8601 or iCalendar basic form)",
+                    "example": "1997-09-02T09:00:00Z"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "description": "Max occurrences to return (default 10, max 500)",
+                    "example": 10
+                  },
+                  "exdate": {
+                    "type": "string",
+                    "description": "Comma-separated exclusion dates",
+                    "example": "1997-09-16T09:00:00Z"
+                  },
+                  "tzid": {
+                    "type": "string",
+                    "description": "Optional IANA time-zone id (accepted; expansion is still UTC-based)",
+                    "example": "America/New_York"
+                  }
+                },
+                "required": [
+                  "rrule",
+                  "dtstart"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/describe": {
+      "post": {
+        "summary": "Describe an RRULE in plain English",
+        "description": "Describe an RRULE in plain English",
+        "operationId": "describeRRule",
+        "tags": [
+          "Recurrence Rule Expander"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rrule": {
+                    "type": "string",
+                    "description": "RRULE string to describe",
+                    "example": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,WE;COUNT=10"
+                  }
+                },
+                "required": [
+                  "rrule"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/validate": {
+      "get": {
+        "summary": "Validate an RRULE and list its parsed parts",
+        "description": "Validate an RRULE and list its parsed parts",
+        "operationId": "validateRRule",
+        "tags": [
+          "Recurrence Rule Expander"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "rrule",
+            "in": "query",
+            "required": true,
+            "description": "RRULE string to validate",
+            "schema": {
+              "type": "string",
+              "example": "FREQ=MONTHLY;BYDAY=2MO;COUNT=3"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

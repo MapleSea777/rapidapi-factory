@@ -1,0 +1,223 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Timezone & Business Hours",
+    "description": "Timezone & Business Hours does two hard things correctly: DST-aware IANA instant conversion and business-hours overlap solving. Offsets are computed from the Intl API’s rendered wall clock, so EST/EDT, GMT/BST and every half-hour zone stay exact even across transitions. The overlap endpoint intersects each teammate’s weekday working hours and returns merged UTC meeting slots everyone can attend. Built for remote and distributed teams, sales scheduling, global support desks and meeting planners.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/timezone/v1"
+    }
+  ],
+  "paths": {
+    "/convert": {
+      "get": {
+        "summary": "Convert an instant across IANA timezones",
+        "description": "Convert a single ISO 8601 instant into local wall-clock time for one or more comma-separated IANA timezones, with DST-correct offset, abbreviation and DST flag. Strings without an offset are treated as UTC.",
+        "operationId": "convertInstant",
+        "tags": [
+          "Timezone & Business Hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "instant",
+            "in": "query",
+            "required": true,
+            "description": "ISO 8601 instant (no offset = UTC)",
+            "schema": {
+              "type": "string",
+              "example": "2024-01-15T12:00:00Z"
+            }
+          },
+          {
+            "name": "zones",
+            "in": "query",
+            "required": true,
+            "description": "Comma-separated IANA timezone names",
+            "schema": {
+              "type": "string",
+              "example": "America/New_York,Europe/London,Asia/Shanghai"
+            }
+          }
+        ]
+      }
+    },
+    "/now": {
+      "get": {
+        "summary": "Current time in multiple timezones",
+        "description": "Return the current UTC instant and the corresponding local time, offset, abbreviation and DST flag for each requested IANA timezone.",
+        "operationId": "nowInZones",
+        "tags": [
+          "Timezone & Business Hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "zones",
+            "in": "query",
+            "required": true,
+            "description": "Comma-separated IANA timezone names",
+            "schema": {
+              "type": "string",
+              "example": "UTC,America/Los_Angeles,Asia/Tokyo"
+            }
+          }
+        ]
+      }
+    },
+    "/overlap": {
+      "post": {
+        "summary": "Find overlapping business-hours slots",
+        "description": "Given two or more timezones (the first is the reference), scan a multi-day window in 30-minute steps and return contiguous UTC slots where at least min_tz_count zones are inside their weekday business hours.",
+        "operationId": "findBusinessHourOverlap",
+        "tags": [
+          "Timezone & Business Hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zones": {
+                    "type": "string",
+                    "description": "Comma-separated IANA timezone names; first is the reference",
+                    "example": "America/New_York,Europe/London"
+                  },
+                  "start": {
+                    "type": "string",
+                    "description": "Start date YYYY-MM-DD (default: today in reference zone)",
+                    "example": "2024-01-15"
+                  },
+                  "days": {
+                    "type": "integer",
+                    "description": "Number of days to scan (1-30, default 7)",
+                    "example": "7"
+                  },
+                  "hours_start": {
+                    "type": "integer",
+                    "description": "Business day start hour, 0-23 (default 9)",
+                    "example": "9"
+                  },
+                  "hours_end": {
+                    "type": "integer",
+                    "description": "Business day end hour, 1-24 (default 17)",
+                    "example": "17"
+                  },
+                  "duration_minutes": {
+                    "type": "integer",
+                    "description": "Minimum slot length in minutes (default 60)",
+                    "example": "60"
+                  },
+                  "min_tz_count": {
+                    "type": "integer",
+                    "description": "Minimum zones in a slot (default 2)",
+                    "example": "2"
+                  }
+                },
+                "required": [
+                  "zones"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/zones": {
+      "get": {
+        "summary": "List common IANA timezones with current offsets",
+        "description": "Return a curated catalogue of common IANA timezone identifiers with their current UTC offset, abbreviation and DST flag, optionally filtered by a substring match on the zone name.",
+        "operationId": "listZones",
+        "tags": [
+          "Timezone & Business Hours"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Case-insensitive substring filter on the zone name",
+            "schema": {
+              "type": "string",
+              "example": "America"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

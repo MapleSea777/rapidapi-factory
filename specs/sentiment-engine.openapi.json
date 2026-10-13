@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sentiment Engine",
+    "description": "Sentiment Engine scores text polarity using a 170-word weighted lexicon, flips sentiment for negations within 3 tokens, boosts or dampens with intensifiers (very, really, slightly), and understands common emoji. Returns a clamped -1..1 score, positive/negative/neutral label, comparative score and matched tokens. Ideal for reviews, support tickets and social listening.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/sentiment/v1"
+    }
+  ],
+  "paths": {
+    "/analyze": {
+      "post": {
+        "summary": "Analyze sentiment of text",
+        "description": "Analyze sentiment of text",
+        "operationId": "analyzeSentiment",
+        "tags": [
+          "Sentiment Engine"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Text to analyze",
+                    "example": "The product is great but shipping was slow."
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

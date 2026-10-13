@@ -1,0 +1,25 @@
+{
+  "name": "rapidapi-factory",
+  "version": "1.0.0",
+  "description": "A zero-dependency factory of monetizable utility APIs, ready to be listed on RapidAPI.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/smoke.js",
+    "specs": "node scripts/dump-specs.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "rapidapi",
+    "api",
+    "monetization",
+    "saas",
+    "utility"
+  ],
+  "license": "MIT",
+  "dependencies": {}
+}

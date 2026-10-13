@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "VIN Decoder",
+    "description": "VIN Decoder validates 17-character Vehicle Identification Numbers: character-set rules (no I/O/Q), ISO 3779 check-digit verification with transliteration and weighting, World Manufacturer Identifier resolution for 30+ makers, and model-year decoding from the 10th position. Ideal for automotive marketplaces, insurance and fleet tools.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/vin/v1"
+    }
+  ],
+  "paths": {
+    "/decode": {
+      "get": {
+        "summary": "Decode a VIN",
+        "description": "Decode a VIN",
+        "operationId": "decodeVin",
+        "tags": [
+          "VIN Decoder"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "vin",
+            "in": "query",
+            "required": true,
+            "description": "17-character VIN",
+            "schema": {
+              "type": "string",
+              "example": "1HGCM82633A004352"
+            }
+          }
+        ]
+      }
+    },
+    "/validate": {
+      "get": {
+        "summary": "Validate VIN structure",
+        "description": "Validate VIN structure",
+        "operationId": "validateVin",
+        "tags": [
+          "VIN Decoder"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "vin",
+            "in": "query",
+            "required": true,
+            "description": "VIN to validate",
+            "schema": {
+              "type": "string",
+              "example": "1HGCM82633A004352"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

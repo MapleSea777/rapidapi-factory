@@ -1,0 +1,253 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bank Code Suite",
+    "description": "Bank Code Suite validates and parses the world's national bank-identifier systems in one API: ISO 9362 SWIFT/BIC (with full ISO 3166-1 country resolution), US ABA routing numbers (3-7-1 checksum plus Federal Reserve district and institution-type decoding), UK sort codes (modulus 10/11 account checks), India IFSC and Australian BSB. Each scheme relies on its own country-specific algorithm and reference data — detail that is tedious and error-prone to rebuild in-house. Built for fintech KYC, payment processors, cross-border payout and reconciliation tools.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://rapidapi-factory.onrender.com/bank-code/v1"
+    }
+  ],
+  "paths": {
+    "/bic": {
+      "get": {
+        "summary": "Validate a SWIFT/BIC code",
+        "description": "Parse and validate an 8 or 11 character ISO 9362 SWIFT/BIC code, resolving the bank, ISO country and primary-office/passive status.",
+        "operationId": "validateBic",
+        "tags": [
+          "Bank Code Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "bic",
+            "in": "query",
+            "required": true,
+            "description": "8 or 11 character SWIFT/BIC code",
+            "schema": {
+              "type": "string",
+              "example": "DEUTDEFF500"
+            }
+          }
+        ]
+      }
+    },
+    "/aba": {
+      "get": {
+        "summary": "Validate a US ABA routing number",
+        "description": "Validate a 9-digit US ABA routing number using the 3-7-1 weighted checksum and decode the Federal Reserve district and institution type.",
+        "operationId": "validateAba",
+        "tags": [
+          "Bank Code Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "routing_number",
+            "in": "query",
+            "required": true,
+            "description": "9-digit ABA routing number",
+            "schema": {
+              "type": "string",
+              "example": "021000021"
+            }
+          }
+        ]
+      }
+    },
+    "/sort-code": {
+      "get": {
+        "summary": "Validate a UK sort code",
+        "description": "Validate and format a UK sort code and, when a 8-digit account number is supplied, run the UK modulus 10 and modulus 11 account checks.",
+        "operationId": "validateSortCode",
+        "tags": [
+          "Bank Code Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "sort_code",
+            "in": "query",
+            "required": true,
+            "description": "UK sort code (e.g. \"40-47-84\", \"40 47 84\" or \"404784\")",
+            "schema": {
+              "type": "string",
+              "example": "40-47-84"
+            }
+          },
+          {
+            "name": "account_number",
+            "in": "query",
+            "required": false,
+            "description": "Optional 8-digit account number to run the modulus 10/11 check",
+            "schema": {
+              "type": "string",
+              "example": "70872490"
+            }
+          }
+        ]
+      }
+    },
+    "/ifsc": {
+      "get": {
+        "summary": "Validate an Indian IFSC code",
+        "description": "Validate a 4-letter + 0 + 6-character Indian IFSC code and resolve the issuing bank from a reference table.",
+        "operationId": "validateIfsc",
+        "tags": [
+          "Bank Code Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ifsc",
+            "in": "query",
+            "required": true,
+            "description": "Indian IFSC code",
+            "schema": {
+              "type": "string",
+              "example": "HDFC0000001"
+            }
+          }
+        ]
+      }
+    },
+    "/bsb": {
+      "get": {
+        "summary": "Validate an Australian BSB",
+        "description": "Validate and format a 6-digit Australian BSB number.",
+        "operationId": "validateBsb",
+        "tags": [
+          "Bank Code Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        },
+        "parameters": [
+          {
+            "name": "bsb",
+            "in": "query",
+            "required": true,
+            "description": "Australian BSB (e.g. \"062-000\")",
+            "schema": {
+              "type": "string",
+              "example": "062-000"
+            }
+          }
+        ]
+      }
+    },
+    "/list": {
+      "get": {
+        "summary": "List supported bank-code systems",
+        "description": "Catalogue of the bank-code systems supported by this API.",
+        "operationId": "listBankCodeSystems",
+        "tags": [
+          "Bank Code Suite"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    }
+  }
+}
